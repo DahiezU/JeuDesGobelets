@@ -1,7 +1,7 @@
 import utilitaire
 
 def PartieIA():
-    ficL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
+    ficL = open("C:..\\config.txt", "r")
     IALevel = int(list(str(ficL.read()))[1])
     ficL.close()
     if (IALevel == 3):

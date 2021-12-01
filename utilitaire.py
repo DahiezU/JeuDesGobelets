@@ -83,13 +83,17 @@ def AfficheGrille(data, player):
     print("        +-----+-----+-----+")
     for i in range (1,4):
         print("    ",str(i)," | ",dataG.get(str(i)+'1', " ")," | ",dataG.get(str(i)+"2", " ")," | ",dataG.get(str(i)+"3", " ")," |")
+       
         print("        +-----+-----+-----+")
+        
     print("\n +------------+--------------------------+--------------------------+-------------------------+")
     if(player == 1):    
         print(" | Joueur ",str(player)," | ", "Petit (.) (N°1) : [",dataP1.get("petit"), "] | Moyens (x) (N°2) : [",dataP1.get("moyen"), "] | Grand (X) (N°3) : [",dataP1.get("grand"), "] | ")
     elif(player == 2):
         print(" | Joueur ",str(player)," | ", "Petit (o) (N°1) : [",dataP2.get("petit"), "] | Moyens (0) (N°2) : [",dataP2.get("moyen"), "] | Grand (O) (N°3) : [",dataP2.get("grand"), "] |")
     print(" +------------+--------------------------+--------------------------+-------------------------+")
+
+AfficheGrille( {"player1":{"petit":2,"moyen":3,"grand":2}, "player2":{"petit":2,"moyen":3,"grand":2}, "dataGrille":{"11":"Julien le boss", "22":"x"}}, 1)
 
 def placerGobeletIASimple(dataPartie):
     findPlace = False
@@ -113,20 +117,26 @@ def placerGoblet(dataPartie, player, errorEnter):
     if(player == 3):
         bonus.animationLoad()
     AfficheGrille(dataPartie, player)
+    
+
     try:
         symbole = int(input("\nEntrez un numéro de symbole : "))
         vLigne = int(input("Entrez un numéro de ligne : "))
         vColonne = int(input("Entrez un numéro de colonne : "))
+        it_is = True
+    except ValueError:
+        it_is = False
+
+    if(it_is):
         EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
         dataPartie = EntrerDicoV[0]
         errorEnter = EntrerDicoV[1]
         if(errorEnter == True):
             print("\nCombinaison impossible, essayez autre chose.")
-        #voir si il faut mettre une tab ici
         return dataPartie, errorEnter 
-    except ValueError:
+    else:
         placerGoblet(dataPartie, player, errorEnter)
-    
+
 
 
 def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):

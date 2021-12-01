@@ -1,12 +1,12 @@
 def optionsC():
-    print("\n - Type de jeu \n\n    - [1] Un joueur \n    - [2] Deux joueurs \n\n - IA \n\n    - [3] Simple \n    - [4] Avancée \n\n - [5] Retour ")
+    print("\n - Nombre de joueurs :\n\n    - [1] Un joueur \n    - [2] Deux joueurs \n\n - Niveau de l'IA :\n\n    - [3] Simple \n    - [4] Avancée \n\n - [5] Retour ")
     value = input("\n Selectionnez un numéro : ")
     
     if(int(value)>=1 and int(value)<=4):
-        fichierL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
+        fichierL = open("..\\config.txt", "r")
         fichierec = list(str(fichierL.read()))
         fichierL.close()
-        fichier = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "w")
+        fichier = open("C:..\\config.txt", "w")
         if(value == "1"):
             fichierec[0] = "1"
             fichier.write("".join(fichierec))
