@@ -1,7 +1,7 @@
 import utilitaire
 
 def PartieIA():
-    ficL = open("C:..\\config.txt", "r")
+    ficL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
     IALevel = int(list(str(ficL.read()))[1])
     ficL.close()
     if (IALevel == 3):
@@ -15,27 +15,20 @@ def PartieIA():
         return
 
 def IASimple():
-    dataPartie = {"player1":{"petit":2,"moyen":3,"grand":2}, "player2":{"petit":2,"moyen":3,"grand":2}, "dataGrille":{}}
+    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2}, "dataGrille":{}}
     
     Symbole = ""
-    errorEnter = False
     
     playerAv = True
     while utilitaire.win(dataPartie, 1, True) == 0 or playerAv == True:
 
         
-
         dataPartie = utilitaire.placerGobeletIASimple(dataPartie)
-        if(utilitaire.win(dataPartie, playerAv, False)):
+        if(utilitaire.win(dataPartie, playerAv, False)!=0):
             playerAv = False
         else:
-            placerGobletV = utilitaire.placerGoblet(dataPartie, 1, errorEnter)
-            dataPartie = placerGobletV[0]
-            errorEnter = placerGobletV[1]
-
-
-        if(errorEnter):
-            errorEnter = False
+            utilitaire.AfficheGrille(dataPartie, 1)
+            dataPartie = utilitaire.placerGoblet(dataPartie, 1)
         
     return
 

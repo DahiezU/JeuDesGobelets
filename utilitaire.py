@@ -2,9 +2,11 @@ from re import match
 from random import randrange
 import bonus
 
-def placeOk(data, symbole, vLigne, vColonne):
+def placeOk(data, symbole, vLigne, vColonne, player):
     dataPlace = data["dataGrille"].get(str(vLigne)+str(vColonne))
-    
+    dataP = data["player"+str(player)]
+    if(dataP.get(str(symbole))==0):
+        return False
     if(vColonne < 0 or vColonne > 4 or vLigne < 0 or vLigne > 4 or symbole < 0 or symbole > 4):
         return False
     if(dataPlace == None):
@@ -47,7 +49,7 @@ def win(data, player, conditions):
             valVerifC = valVerifC + str(dataG.get(str(j)+str(i)))
             if(match(regexW, valVerifL) != None or match(regexW, valVerifC) != None or match(regexW, valVerifD1) != None or match(regexW, valVerifD2) != None ):
                 
-                AfficheGrille(data, player)
+                
                 if(conditions):
                     print("\n   --- Joueur ",player," Gagne ---\n")
                     input("\nPressez entrer pour revenir au menu.\n ")
@@ -62,12 +64,12 @@ def win(data, player, conditions):
 
     if(len(dataG) > 8):
                  
-        RMoy = dataP1.get("moyen")+dataP2.get("moyen")
-        if(tabVal.count("X")+tabVal.count("X")>3 and (RMoy==0 or (RMoy==1 and data.get("player"+str(player).get("moyen"))))):
+        RMoy = dataP1.get("2")+dataP2.get("2")
+        if(tabVal.count("X")+tabVal.count("X")>3 and (RMoy==0 or (RMoy==1 and data.get("player"+str(player).get("2"))))):
             print("Egalité entre les deux joueurs.")
             return 5
 
-    if(dataP1.get("petit")==0 and dataP1.get("moyen")==0 and dataP1.get("grand")==0 and dataP2.get("petit")==0 and dataP2.get("moyen")==0 and dataP2.get("grand")==0):
+    if(dataP1.get("1")==0 and dataP1.get("2")==0 and dataP1.get("3")==0 and dataP2.get("1")==0 and dataP2.get("2")==0 and dataP2.get("3")==0):
         print("Egalité entre les deux joueurs.")
         return 3
     
@@ -88,12 +90,11 @@ def AfficheGrille(data, player):
         
     print("\n +------------+--------------------------+--------------------------+-------------------------+")
     if(player == 1):    
-        print(" | Joueur ",str(player)," | ", "Petit (.) (N°1) : [",dataP1.get("petit"), "] | Moyens (x) (N°2) : [",dataP1.get("moyen"), "] | Grand (X) (N°3) : [",dataP1.get("grand"), "] | ")
+        print(" | Joueur ",str(player)," | ", "Petit (.) (N°1) : [",dataP1.get("1"), "] | Moyens (x) (N°2) : [",dataP1.get("2"), "] | Grand (X) (N°3) : [",dataP1.get("3"), "] | ")
     elif(player == 2):
-        print(" | Joueur ",str(player)," | ", "Petit (o) (N°1) : [",dataP2.get("petit"), "] | Moyens (0) (N°2) : [",dataP2.get("moyen"), "] | Grand (O) (N°3) : [",dataP2.get("grand"), "] |")
+        print(" | Joueur ",str(player)," | ", "Petit (o) (N°1) : [",dataP2.get("1"), "] | Moyens (0) (N°2) : [",dataP2.get("2"), "] | Grand (O) (N°3) : [",dataP2.get("3"), "] |")
     print(" +------------+--------------------------+--------------------------+-------------------------+")
 
-AfficheGrille( {"player1":{"petit":2,"moyen":3,"grand":2}, "player2":{"petit":2,"moyen":3,"grand":2}, "dataGrille":{"11":"Julien le boss", "22":"x"}}, 1)
 
 def placerGobeletIASimple(dataPartie):
     findPlace = False
@@ -102,9 +103,10 @@ def placerGobeletIASimple(dataPartie):
         vLigne = randrange(1, 4)
         vColonne = randrange(1, 4)
         for symbole in range(1,4):
-            if(placeOk(dataPartie, symbole, vLigne, vColonne)):
-                
-                EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, 3)
+
+            if(placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
+                print(vLigne," : " ,vColonne," : ", symbole)
+                EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
                 dataPartie = EntrerDicoV[0]
                 findPlace = True
                 break
@@ -113,10 +115,10 @@ def placerGobeletIASimple(dataPartie):
     return dataPartie
 
 
-def placerGoblet(dataPartie, player, errorEnter):
-    if(player == 3):
+def placerGoblet(dataPartie, player):
+    """if(player == 3):
         bonus.animationLoad()
-    AfficheGrille(dataPartie, player)
+    AfficheGrille(dataPartie, player)"""
     
 
     try:
@@ -130,36 +132,36 @@ def placerGoblet(dataPartie, player, errorEnter):
     if(it_is):
         EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
         dataPartie = EntrerDicoV[0]
-        errorEnter = EntrerDicoV[1]
-        if(errorEnter == True):
-            print("\nCombinaison impossible, essayez autre chose.")
-        return dataPartie, errorEnter 
+        
+        return dataPartie 
     else:
-        placerGoblet(dataPartie, player, errorEnter)
+        placerGoblet(dataPartie, player)
 
 
 
 def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):
     errorEnter = False
-    if(placeOk(dataPartie, symbole, vLigne, vColonne)):
-        if(symbole == 1 and player == 1 and dataPartie["player1"]["petit"] > 0):
+    if(placeOk(dataPartie, symbole, vLigne, vColonne, player)):
+        if(symbole == 1 and player == 1 and dataPartie["player1"]["1"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "."
-            dataPartie["player1"]["petit"] = dataPartie["player1"]["petit"] -1
-        elif(symbole == 2 and player == 1 and dataPartie["player1"]["moyen"] > 0):
+            dataPartie["player1"]["1"] = dataPartie["player1"]["1"] -1
+        elif(symbole == 2 and player == 1 and dataPartie["player1"]["2"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "x"
-            dataPartie["player1"]["moyen"] = dataPartie["player1"]["moyen"] -1
-        elif(symbole == 3 and player == 1 and dataPartie["player1"]["grand"] > 0):
+            dataPartie["player1"]["2"] = dataPartie["player1"]["2"] -1
+        elif(symbole == 3 and player == 1 and dataPartie["player1"]["3"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "X"
-            dataPartie["player1"]["grand"] = dataPartie["player1"]["grand"] -1
-        elif(symbole == 1 and (player == 2 or player == 3) and dataPartie["player2"]["petit"] > 0):
+            dataPartie["player1"]["3"] = dataPartie["player1"]["3"] -1
+            
+        elif(symbole == 1 and player == 2  and dataPartie["player2"]["1"] > 0):
+
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "o"
-            dataPartie["player2"]["petit"] = dataPartie["player2"]["petit"] -1
-        elif(symbole == 2 and (player == 2 or player == 3) and dataPartie["player2"]["moyen"] > 0):
+            dataPartie["player2"]["1"] = dataPartie["player2"]["1"] -1
+        elif(symbole == 2 and player == 2  and dataPartie["player2"]["2"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "0"
-            dataPartie["player2"]["moyen"] = dataPartie["player2"]["moyen"] -1
-        elif(symbole == 3 and (player == 2 or player == 3) and dataPartie["player2"]["grand"] > 0):
+            dataPartie["player2"]["2"] = dataPartie["player2"]["2"] -1
+        elif(symbole == 3 and player == 2  and dataPartie["player2"]["3"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "O"
-            dataPartie["player2"]["grand"] = dataPartie["player2"]["grand"] -1
+            dataPartie["player2"]["3"] = dataPartie["player2"]["3"] -1
         else:
             print("Vous avez placé tout vos gobelets")
     else:
