@@ -10,12 +10,19 @@ def Partie2Players():
     playerAv = 2
     while util.win(dataPartie, playerAv, True) == 0:
         util.AfficheGrille(dataPartie, player)
-        dataPartie = util.placerGoblet(dataPartie, player)
-        
-        if(player == 1):
-            player = 2
-            playerAv = 1
-            
+        resPG = util.placerGoblet(dataPartie, player)
+        dataPartie = resPG[0]
+        errorEnter = resPG[1]
+        if(errorEnter):
+            print("\n\n     +-------------------------+")
+            print("     | Combinaison impossible. |")
+            print("     +-------------------------+\n")
+            errorEnter = False
         else:
-            player = 1
-            playerAv = 2
+            if(player == 1):
+                player = 2
+                playerAv = 1
+                
+            else:
+                player = 1
+                playerAv = 2

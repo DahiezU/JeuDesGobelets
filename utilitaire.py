@@ -1,10 +1,10 @@
 from re import match
-from random import randrange
 import bonus
 
 def placeOk(data, symbole, vLigne, vColonne, player):
     dataPlace = data["dataGrille"].get(str(vLigne)+str(vColonne))
     dataP = data["player"+str(player)]
+
     if(dataP.get(str(symbole))==0):
         return False
     else:
@@ -98,31 +98,12 @@ def AfficheGrille(data, player):
     print(" +------------+--------------------------+--------------------------+-------------------------+")
 
 
-def placerGobeletIASimple(dataPartie):
-    findPlace = False
-    
-    while findPlace == False:
-        vLigne = randrange(1, 4)
-        vColonne = randrange(1, 4)
-        for symbole in range(1,4):
 
-            if(placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
-                print(vLigne," : " ,vColonne," : ", symbole)
-                EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
-                dataPartie = EntrerDicoV[0]
-                findPlace = True
-                break
-
-
-    return dataPartie
 
 
 def placerGoblet(dataPartie, player):
-    """if(player == 3):
-        bonus.animationLoad()
-    AfficheGrille(dataPartie, player)"""
-    
-
+    errorEnter = False
+    print("1", dataPartie)
     try:
         symbole = int(input("\nEntrez un numéro de symbole : "))
         vLigne = int(input("Entrez un numéro de ligne : "))
@@ -134,10 +115,12 @@ def placerGoblet(dataPartie, player):
     if(it_is):
         EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
         dataPartie = EntrerDicoV[0]
-        
-        return dataPartie 
+        errorEnter = EntrerDicoV[1]
+        return dataPartie, errorEnter
     else:
-        placerGoblet(dataPartie, player)
+        print("2", dataPartie)
+        dataPartie = placerGoblet(dataPartie, player)[0]
+        return dataPartie, errorEnter
 
 
 
@@ -166,7 +149,7 @@ def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "O"
             dataPartie["player2"]["3"] = dataPartie["player2"]["3"] -1
         else:
-            print("Vous avez placé tout vos gobelets")
+            print("Vous avez placé tout vos gobelets de taille ", symbole)
     else:
         errorEnter = True
     return dataPartie, errorEnter
