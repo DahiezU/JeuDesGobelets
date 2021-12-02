@@ -34,7 +34,6 @@ def placeOk(data, symbole, vLigne, vColonne, player):
 31 22 13
 """
 def win(data, player, conditions):
-    print(data)
     dataG = data.get("dataGrille")
     dataP1 = data.get("player1")
     dataP2 = data.get("player2")
