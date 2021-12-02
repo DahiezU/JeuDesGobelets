@@ -2,13 +2,14 @@ import utilitaire as util
 
 
 def Partie2Players():
-    dataPartie = {"player1":{"1":2,"1":3,"3":2}, "player2":{"1":2,"moyen":3,"2":2}, "3":{}}
+    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2}, "dataGrille":{}}
     
     Symbole = ""
     errorEnter = False
     player = 1
     playerAv = 2
     while util.win(dataPartie, playerAv, True) == 0:
+        util.AfficheGrille(dataPartie, player)
         dataPartie = util.placerGoblet(dataPartie, player)
         
         if(player == 1):

@@ -7,25 +7,26 @@ def placeOk(data, symbole, vLigne, vColonne, player):
     dataP = data["player"+str(player)]
     if(dataP.get(str(symbole))==0):
         return False
-    if(vColonne < 0 or vColonne > 4 or vLigne < 0 or vLigne > 4 or symbole < 0 or symbole > 4):
-        return False
-    if(dataPlace == None):
-        return True
-    elif(symbole == 3):
-        if(dataPlace == "O" or dataPlace == "X"):
+    else:
+        if(vColonne < 0 or vColonne > 4 or vLigne < 0 or vLigne > 4 or symbole < 0 or symbole > 4):
             return False
-        else:
+        if(dataPlace == None):
             return True
-    elif(symbole == 2):
-        if(dataPlace == "0" or dataPlace == "O" or dataPlace == "x" or dataPlace == "X"):
-            return False
-        else:
-            return True
-    elif(symbole == 1):
-        if(dataPlace == "." or dataPlace == "o" or dataPlace == "0" or dataPlace == "x" or dataPlace == "O" or dataPlace == "X"):
-            return False
-        else:
-            return True
+        elif(symbole == 3):
+            if(dataPlace == "O" or dataPlace == "X"):
+                return False
+            else:
+                return True
+        elif(symbole == 2):
+            if(dataPlace == "0" or dataPlace == "O" or dataPlace == "x" or dataPlace == "X"):
+                return False
+            else:
+                return True
+        elif(symbole == 1):
+            if(dataPlace == "." or dataPlace == "o" or dataPlace == "0" or dataPlace == "x" or dataPlace == "O" or dataPlace == "X"):
+                return False
+            else:
+                return True
     
 
 """
@@ -33,6 +34,7 @@ def placeOk(data, symbole, vLigne, vColonne, player):
 31 22 13
 """
 def win(data, player, conditions):
+    print(data)
     dataG = data.get("dataGrille")
     dataP1 = data.get("player1")
     dataP2 = data.get("player2")
@@ -50,7 +52,8 @@ def win(data, player, conditions):
             if(match(regexW, valVerifL) != None or match(regexW, valVerifC) != None or match(regexW, valVerifD1) != None or match(regexW, valVerifD2) != None ):
                 
                 
-                if(conditions):
+                if(conditions== True):
+                    AfficheGrille(data, player)
                     print("\n   --- Joueur ",player," Gagne ---\n")
                     input("\nPressez entrer pour revenir au menu.\n ")
                                
@@ -148,10 +151,11 @@ def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):
         elif(symbole == 2 and player == 1 and dataPartie["player1"]["2"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "x"
             dataPartie["player1"]["2"] = dataPartie["player1"]["2"] -1
+
         elif(symbole == 3 and player == 1 and dataPartie["player1"]["3"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "X"
             dataPartie["player1"]["3"] = dataPartie["player1"]["3"] -1
-            
+
         elif(symbole == 1 and player == 2  and dataPartie["player2"]["1"] > 0):
 
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "o"
