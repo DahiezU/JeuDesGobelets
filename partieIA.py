@@ -39,14 +39,7 @@ def placerGobeletIASimple(dataPartie):
     while findPlace == False:
         vLigne = randrange(1, 4)
         vColonne = randrange(1, 4)
-        for symbole in range(1,4):
-
-            if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
-                
-                EntrerDicoV =  utilitaire.EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
-                dataPartie = EntrerDicoV[0]
-                findPlace = True
-                break
+        dataPartie = placerPlusPetitGoblet(dataPartie, vLigne, vColonne)
 
 
     return dataPartie
@@ -58,29 +51,58 @@ def placerGobeletIASimple(dataPartie):
 def placerGobeletIAComplexe(dataPartie):
     findPlace = False
     dataG = dataPartie["dataGrille"]
-    regexW = "[o0O]{3}"
+    regex2 = "[o0O]{2}"
+    coorP = []
     DicoCoupsPossible = {}
-    for i in range(1,4):
-            for j in range(1,4):
-                valVerifL = valVerifL + str(dataG.get(str(i)+str(j)))
-                valVerifC = valVerifC + str(dataG.get(str(j)+str(i)))
-                if(match(regexW, valVerifL) or match(regexW, valVerifC)):
-                    return
+    for i in range(1,4): # Ligne
+            for j in range(1,4): # Colonne
+                if(dataG.get( str(i)+str(j))== None):
+                    coorP =  [i, j]
+                valVerifL = valVerifL + str(dataG.get(str(i)+str(j)), "")
+                
+                if(dataG.get( str(j)+str(i))== None):
+                    coorP = [i,j]
+                valVerifC = valVerifC + str(dataG.get(str(j)+str(i)), "")
+                
+                if(match(regex2, valVerifL) or match(regex2, valVerifC)):
+
+                    dataPartie = placerPlusPetitGoblet(dataPartie, coorP[0], coorP[1])
+                    findPlace = True
     
-    while findPlace == False:
-        vLigne = 1
-        vColonne = 1
+    if(findPlace == False):
+        for k in range(1,4):
+            if(utilitaire.placeOk(dataPartie, k, 2, 2, 2)):
+                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
+                findPlace = True
+        for l in range(1,4):
+            if(utilitaire.placeOk(dataPartie, k, 1, 1, 2)):
+                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
+                findPlace = True
+            elif(utilitaire.placeOk(dataPartie, k, 1, 3, 2)):
+                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
+                findPlace = True
+            elif(utilitaire.placeOk(dataPartie, k, 3, 1, 2)):
+                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
+                findPlace = True
+            elif(utilitaire.placeOk(dataPartie, k, 3, 3, 2)):
+                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2) 
+                findPlace = True
+        
+    return dataPartie
+                
+            
+    
         
 
-  
-        for symbole in range(1,4):
+def placerPlusPetitGoblet(dataPartie, vLigne, vColonne):
+    for symbole in range(1,4):
 
-            if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
-                
-                EntrerDicoV =  utilitaire.EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
-                dataPartie = EntrerDicoV[0]
-                findPlace = True
-                break
+        if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
+            
+            EntrerDicoV =  utilitaire.EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
+            dataPartie = EntrerDicoV[0]
+            findPlace = True
+            break
 
-    return
+    return dataPartie
 
