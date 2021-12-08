@@ -83,12 +83,12 @@ def AfficheGrille(data, player):
     dataG = data.get("dataGrille")
     dataP1 = data.get("player1")
     dataP2 = data.get("player2")
-    print("\n           1     2     3")
-    print("        +-----+-----+-----+")
+    print("\n              1     2     3")
+    print("            +-----+-----+-----+")
     for i in range (1,4):
-        print("    ",str(i)," | ",dataG.get(str(i)+'1', " ")," | ",dataG.get(str(i)+"2", " ")," | ",dataG.get(str(i)+"3", " ")," |")
+        print("        ",str(i)," | ",dataG.get(str(i)+'1', " ")," | ",dataG.get(str(i)+"2", " ")," | ",dataG.get(str(i)+"3", " ")," |")
        
-        print("        +-----+-----+-----+")
+        print("            +-----+-----+-----+")
         
     print("\n +------------+--------------------------+--------------------------+-------------------------+")
     if(player == 1):    
@@ -103,7 +103,6 @@ def AfficheGrille(data, player):
 
 def placerGoblet(dataPartie, player):
     errorEnter = False
-    print("1", dataPartie)
     try:
         symbole = int(input("\nEntrez un numéro de symbole : "))
         vLigne = int(input("Entrez un numéro de ligne : "))
@@ -121,14 +120,14 @@ def placerGoblet(dataPartie, player):
             return dataPartie, errorEnter
         else:
             AfficheGrille(dataPartie, player)
-            print("\n\n     +-------------------------+")
+            print("\n     +-------------------------+")
             print("     | Combinaison impossible. |")
             print("     +-------------------------+\n")
             dataPartie = placerGoblet(dataPartie, player)[0]
             return dataPartie, errorEnter
     else:   
         AfficheGrille(dataPartie, player)
-        print("\n\n     +-------------------------+")
+        print("\n     +-------------------------+")
         print("     | Combinaison impossible. |")
         print("     +-------------------------+\n")
         dataPartie = placerGoblet(dataPartie, player)[0]

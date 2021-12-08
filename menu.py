@@ -11,7 +11,7 @@ def menu():
         configurations.optionsC()
         menu()
     elif(value == "3"):
-        print("\n\n Dévelopeur : Ulysse Dahiez \n python version : 3.9.5 \n liste des librairies utilisé : re (Pour les Regex) \n\n")
+        print("\n\n Dévelopeur : Ulysse Dahiez \n python version : 3.9.5 \n\n liste des librairies utilisé : \n\n - re du module match (Pour les Regex). \n - randRange du module random.\n\n")
         input("Pressez entrer pour revenir au menu.\n ")
         menu()
     elif(value == "4"):
