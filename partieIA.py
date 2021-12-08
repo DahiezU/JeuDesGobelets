@@ -18,42 +18,44 @@ def IA(IALevel):
     joueur = 1
     playerAv = True
     while utilitaire.win(dataPartie, joueur, True) == 0 or playerAv == True:
+       
         if(joueur == 1):
             if(IALevel == 3):
+                
                 dataPartie = placerGobeletIASimple(dataPartie)
+                
 
             if(IALevel == 4):
                 dataPartie = placerGobeletIAComplexe(dataPartie)
             joueur = 2
             playerAv = False
         else:
-            joueur = 1
+
             utilitaire.AfficheGrille(dataPartie, 1)
             dataPartie = utilitaire.placerGoblet(dataPartie, 1)[0]
+            joueur = 1
         
     return
 
 def placerGobeletIASimple(dataPartie):
     findPlace = False
-    
+    dataBase = dataPartie
     while findPlace == False:
         vLigne = randrange(1, 4)
         vColonne = randrange(1, 4)
-        dataPartie = placerPlusPetitGoblet(dataPartie, vLigne, vColonne)
-
+        resPPPG = placerPlusPetitGoblet(dataPartie, vLigne, vColonne)
+        dataPartie = resPPPG[0]
+        findPlace = resPPPG[1]
 
     return dataPartie
 
-"""
- 
-"""
 
 def placerGobeletIAComplexe(dataPartie):
     findPlace = False
     dataG = dataPartie["dataGrille"]
     regex2 = "[o0O]{2}"
     coorP = []
-    DicoCoupsPossible = {}
+    ListOC = [[(2,2)],[(1,1),(1,3),(3,1),(3,3)],[(1,2),(2,1),(2,3),(3,2)]]
     for i in range(1,4): # Ligne
             for j in range(1,4): # Colonne
                 if(dataG.get( str(i)+str(j))== None):
@@ -66,27 +68,22 @@ def placerGobeletIAComplexe(dataPartie):
                 
                 if(match(regex2, valVerifL) or match(regex2, valVerifC)):
 
-                    dataPartie = placerPlusPetitGoblet(dataPartie, coorP[0], coorP[1])
+                    dataPartie = placerPlusPetitGoblet(dataPartie, coorP[0], coorP[1])[0]
                     findPlace = True
     
     if(findPlace == False):
-        for k in range(1,4):
-            if(utilitaire.placeOk(dataPartie, k, 2, 2, 2)):
-                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
-                findPlace = True
-        for l in range(1,4):
-            if(utilitaire.placeOk(dataPartie, k, 1, 1, 2)):
-                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
-                findPlace = True
-            elif(utilitaire.placeOk(dataPartie, k, 1, 3, 2)):
-                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
-                findPlace = True
-            elif(utilitaire.placeOk(dataPartie, k, 3, 1, 2)):
-                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2)
-                findPlace = True
-            elif(utilitaire.placeOk(dataPartie, k, 3, 3, 2)):
-                dataPartie = placerPlusPetitGoblet(dataPartie, 2, 2) 
-                findPlace = True
+        for l  in range (0,len(ListOC)):
+            m = randrange(0,len(ListOC[l]))
+            for k in range(1,4):
+                if(findPlace == False):
+                    if(utilitaire.placeOk(dataPartie, k, ListOC[l][m][0], ListOC[l][m][1], 2)):
+                        dataPartie = placerPlusPetitGoblet(dataPartie, ListOC[l][m][0], ListOC[l][m][1])[0]
+                        findPlace = True
+                        break
+                
+                        
+        
+                
         
     return dataPartie
                 
@@ -104,5 +101,5 @@ def placerPlusPetitGoblet(dataPartie, vLigne, vColonne):
             findPlace = True
             break
 
-    return dataPartie
+    return dataPartie, findPlace
 

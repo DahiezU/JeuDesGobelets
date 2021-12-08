@@ -112,13 +112,25 @@ def placerGoblet(dataPartie, player):
     except ValueError:
         it_is = False
 
-    if(it_is):
-        EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
-        dataPartie = EntrerDicoV[0]
-        errorEnter = EntrerDicoV[1]
-        return dataPartie, errorEnter
-    else:
-        print("2", dataPartie)
+    if(placeOk(dataPartie, symbole, vLigne, vColonne, player)):
+
+        if(it_is):
+            EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
+            dataPartie = EntrerDicoV[0]
+            errorEnter = EntrerDicoV[1]
+            return dataPartie, errorEnter
+        else:
+            AfficheGrille(dataPartie, player)
+            print("\n\n     +-------------------------+")
+            print("     | Combinaison impossible. |")
+            print("     +-------------------------+\n")
+            dataPartie = placerGoblet(dataPartie, player)[0]
+            return dataPartie, errorEnter
+    else:   
+        AfficheGrille(dataPartie, player)
+        print("\n\n     +-------------------------+")
+        print("     | Combinaison impossible. |")
+        print("     +-------------------------+\n")
         dataPartie = placerGoblet(dataPartie, player)[0]
         return dataPartie, errorEnter
 
@@ -133,13 +145,10 @@ def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):
         elif(symbole == 2 and player == 1 and dataPartie["player1"]["2"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "x"
             dataPartie["player1"]["2"] = dataPartie["player1"]["2"] -1
-
         elif(symbole == 3 and player == 1 and dataPartie["player1"]["3"] > 0):
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "X"
             dataPartie["player1"]["3"] = dataPartie["player1"]["3"] -1
-
         elif(symbole == 1 and player == 2  and dataPartie["player2"]["1"] > 0):
-
             dataPartie["dataGrille"][str(vLigne)+str(vColonne)] = "o"
             dataPartie["player2"]["1"] = dataPartie["player2"]["1"] -1
         elif(symbole == 2 and player == 2  and dataPartie["player2"]["2"] > 0):

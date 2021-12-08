@@ -14,9 +14,7 @@ def Partie2Players():
         dataPartie = resPG[0]
         errorEnter = resPG[1]
         if(errorEnter):
-            print("\n\n     +-------------------------+")
-            print("     | Combinaison impossible. |")
-            print("     +-------------------------+\n")
+            
             errorEnter = False
         else:
             if(player == 1):
