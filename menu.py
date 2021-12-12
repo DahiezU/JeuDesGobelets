@@ -1,7 +1,8 @@
 import deuxJoueurs
 import configurations
 import partieIA
-
+import os
+print(os.getcwd())
 def menu():
     print("\n --- JEU DES GOBLETS --- \n\n - [1] Nouvelle Partie \n - [2] Options \n - [3] Credits \n - [4] Quitter")
     value = input("\n Selectionnez un numéro : ")
@@ -21,7 +22,7 @@ def menu():
         menu()
     
 def newPartie():
-    ficL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
+    ficL = open("config.txt", "r")
     nbPlayer = int(list(str(ficL.read()))[0])
     ficL.close()
     if(nbPlayer == 2):

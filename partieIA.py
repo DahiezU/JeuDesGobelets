@@ -3,7 +3,7 @@ from re import match
 from random import randrange
 
 def PartieIA():
-    ficL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
+    ficL = open("config.txt", "r")
     IALevel = int(list(str(ficL.read()))[1])
     ficL.close()
     IA(IALevel)
@@ -11,8 +11,17 @@ def PartieIA():
                 
     return
 
+    """
+    fonctionne 
+    "dataGrille":{"21":"o","22":"O"}
+
+    fonctionne pas
+    "dataGrille":{"12":"o","22":"O"}
+    "dataGrille":{"13":"o","33":"O"}
+    """
+
 def IA(IALevel):
-    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2}, "dataGrille":{"22":"0","21":"o"}}
+    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2},"dataGrille":{'22': 'o', '11': 'X', '33': 'o'}}
     
     Symbole = ""
     joueur = 1
@@ -34,6 +43,8 @@ def IA(IALevel):
             utilitaire.AfficheGrille(dataPartie, 1)
             dataPartie = utilitaire.placerGoblet(dataPartie, 1)[0]
             joueur = 1
+
+        print(dataPartie)
         
     return
 
@@ -54,50 +65,183 @@ def placerGobeletIAComplexe(dataPartie):
     findPlace = False
     dataG = dataPartie["dataGrille"]
     regex2 = "[o0Oe]{3}"
-    coorP = []
     valVerifL = ""
     valVerifC = ""
     ListOC = [[(2,2)],[(1,1),(1,3),(3,1),(3,3)],[(1,2),(2,1),(2,3),(3,2)]]
-    for i in range(1,4): # Ligne
-        for j in range(1,4): # Colonne
-           if(findPlace == False):     
-                valVerifL = valVerifL + str(dataG.get(str(i)+str(j), "e"))
-                thisVal = dataG.get(str(j)+str(i))
+    myListToChange = [".","x"]
 
-                if(match(regex2, valVerifL)  and valVerifL.count("e")==1):
+    valVerifD1 = str(dataG.get("11", "e"))+str(dataG.get("22", "e"))+str(dataG.get("33", "e"))
+    valVerifD2 = str(dataG.get("31", "e"))+str(dataG.get("22", "e"))+str(dataG.get("13", "e"))
+
+
+    if(findPlace ==False):
+        
+        if(valVerifD1.count("e")==0 and (valVerifD1.count(".") +  valVerifD1.count("x") == 1) ):
+            
+            for p in range(1,4):
+                
+                if(utilitaire.placeOk(dataPartie, p, valVerifD1.find(".")+1, valVerifD1.find(".")+1, 2) and valVerifD1.count(".") == 1 ):
+                   
+                    dataPartie = placerPlusPetitGoblet(dataPartie, valVerifD1.find(".")+1, valVerifD1.find(".")+1)[0]
+                    findPlace = True
+                    break
+
+                if(utilitaire.placeOk(dataPartie, p, valVerifD1.find("x")+1, valVerifD1.find("x")+1, 2) and valVerifD1.count("x") == 1):
                     
-                    dataPartie = placerPlusPetitGoblet(dataPartie, i, valVerifL.find("e")+1)[0]
-                    findPlace = True
-                    break
-
-                valVerifC = valVerifC + str(dataG.get(str(j)+str(i), "e"))
-                print("valVerifC : ",valVerifC)
-                if(match(regex2, valVerifC)  and valVerifC.count("e")==1 ):
-                    print("ok")
-                    dataPartie = placerPlusPetitGoblet(dataPartie, valVerifC.find("e")+1, i)[0]
+                    dataPartie = placerPlusPetitGoblet(dataPartie, valVerifD1.find("x")+1, valVerifD1.find("x")+1)[0]
                     findPlace = True
                     break
             
-            
-        valVerifL = ""
-        valVerifC = ""
-                        
     
-    if(findPlace == False):
-        for l  in range (0,len(ListOC)):
-            m = randrange(0,len(ListOC[l]))
-            #for m in range(0, len(ListOC[l])):
-            for k in range(1,4):
-                if(findPlace == False):
+
+        
+        if(valVerifD2.count("e")==0 and (valVerifD2.count(".") + valVerifD2.count("x") == 1)):
+            
+            tabD2 = [(3,1),(2,2),(1,3)]
+            for q in  tabD2:
+                for p in range(1,4):
                     
-                    thisVal = dataG.get(str(ListOC[l][m][0])+str(ListOC[l][m][1]))
-                    print("data : ", dataPartie)
-                    if(utilitaire.placeOk(dataPartie, k, ListOC[l][m][0], ListOC[l][m][1], 2) and thisVal != "o" and thisVal != "0" and thisVal != "O"):
-                        print("ça passe !")
-                        dataPartie = placerPlusPetitGoblet(dataPartie, ListOC[l][m][0], ListOC[l][m][1])[0]
+                    if(utilitaire.placeOk(dataPartie, p, q[0], q[1], 2)):
+                        
+                        dataPartie = placerPlusPetitGoblet(dataPartie, q[0], q[1])[0]
+                        findPlace = True
+                        break
+
+                    elif(utilitaire.placeOk(dataPartie, p, q[0], valVerifD2.find(".")+1, 2)):
+
+                        dataPartie = placerPlusPetitGoblet(dataPartie, q[0], q[1])[0]
+                        findPlace = True
+                        break
+
+                    elif(utilitaire.placeOk(dataPartie, p, q[0], valVerifD2.find("x")+1, 2)):
+
+                        dataPartie = placerPlusPetitGoblet(dataPartie, q[0], q[1])[0]
                         findPlace = True
                         break
                 
+                    elif(utilitaire.placeOk(dataPartie, p, q[0], valVerifD2.find("X")+1, 2)):
+                        
+                        dataPartie = placerPlusPetitGoblet(dataPartie, q[0], q[1])[0]
+                        findPlace = True
+                        break
+                    
+                
+                
+        
+        for r in myListToChange:
+
+            valVerifD1 = valVerifD1.replace(r,"e")
+            valVerifD2 = valVerifD1.replace(r,"e")
+        
+        if(match(regex2, valVerifD1) != None and valVerifD1.count("e")==1 and findPlace == False):
+                
+            dataPartie = placerPlusPetitGoblet(dataPartie, valVerifD1.find("e")+1, valVerifD1.find("e")+1)[0]
+            
+            findPlace = True
+
+        if(match(regex2, valVerifD2) != None and valVerifD2.count("e")==1 and findPlace == False):
+            
+            for n in range(1,4):
+                for o in range(1,4):
+                    if(utilitaire.placeOk(dataPartie, o, valVerifD2.find("e")+1, n , 2)):
+                        dataPartie = placerPlusPetitGoblet(dataPartie, valVerifD2.find("e")+1, n)[0]
+                        findPlace = True
+
+    if(findPlace == False):
+        
+        for i in range(1,4): # Ligne
+            for j in range(1,4): # Colonne
+                if(findPlace == False): 
+
+                        
+                    symbo = str(dataG.get(str(i)+str(j), "e")) 
+                    if(symbo == "." or symbo== "x"):
+                        symbo = "e"
+                    valVerifL = valVerifL + symbo
+                    
+                    for m in range(1,4):
+                        pOL = utilitaire.placeOk(dataPartie, m, i, valVerifL.find("e")+1 , 2)
+                        pOC = utilitaire.placeOk(dataPartie, m, valVerifC.find("e")+1, i , 2)
+                    
+
+
+                    if( match(regex2, valVerifL) != None  and valVerifL.count("e")==1 and pOL == True ):
+                        
+                        dataPartie = placerPlusPetitGoblet(dataPartie, i, valVerifL.find("e")+1)[0]
+                        
+                        findPlace = True
+                        break
+
+                    #pour les lignes
+                    symb = str(dataG.get(str(j)+str(i), "e")) 
+                    if(symb == "." or symb== "x"):
+                        symb = "e"
+                    valVerifC = valVerifC + symb
+                    if(match(regex2, valVerifC) != None and valVerifC.count("e")==1 and pOC == True ):
+                        
+                        dataPartie = placerPlusPetitGoblet(dataPartie, valVerifC.find("e")+1, i)[0]
+                        findPlace = True
+                        break
+                
+            valVerifL = ""
+            valVerifC = ""
+    # pour alligner deux pions
+    print("fp : ", findPlace)
+
+    if(findPlace == False and ((dataG.get("22") != "o" or dataG.get("22") != "0" or dataG.get("22") != "O") and dataG.get("22") != None)):
+        print("ca passe")
+        listS = ["o","0","O"]
+        for t in range(1,4):
+            for u in range(1,4):
+                if(findPlace == False and (i != 2 and j != 2)):
+                
+                    for v in range(1,4):
+                        thisVal = dataG.get(str(i+1)+str(j))
+                        if(i+1 < 4 and utilitaire.placeOk(dataPartie, v, i+1, j, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, i+1, j)[0]
+                            findPlace = True
+                            break
+                        thisVal = dataG.get(str(i)+str(j+1))
+                        if(j+1 < 4 and utilitaire.placeOk(dataPartie, v, i, j+1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, i, j+1)[0]
+                            findPlace = True
+                            break
+
+                        thisVal = dataG.get(str(i-1)+str(j))
+                        if(i-1 < 0, utilitaire.placeOk(dataPartie, v, i+1, j, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, i-1, j)[0]
+                            findPlace = True
+                            break
+
+                        thisVal = dataG.get(str(i)+str(j-1))
+                        if(j-1 < 0, utilitaire.placeOk(dataPartie, v, i, j+1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, i, j-1)[0]
+                            findPlace = True
+                            break
+                       
+
+
+
+    if(findPlace == False):
+        
+        for l  in range (0,len(ListOC)):
+            for s in range (0, len(ListOC[l])):
+                lenLOC = len(ListOC[l])
+                if(lenLOC>0):
+                    
+                    m = randrange(0,len(ListOC[l]))
+                    
+                    for k in range(1,4):
+                        if(findPlace == False):
+
+                            thisVal = dataG.get(str(ListOC[l][m][0])+str(ListOC[l][m][1]))
+                            if(utilitaire.placeOk(dataPartie, k, ListOC[l][m][0], ListOC[l][m][1], 2) and thisVal != "o" and thisVal != "0" and thisVal != "O"):
+                                
+                                dataPartie = placerPlusPetitGoblet(dataPartie, ListOC[l][m][0], ListOC[l][m][1])[0]
+                                findPlace = True
+                                break
+                    del ListOC[l][m]
+            
                         
     return dataPartie
                 
@@ -106,6 +250,7 @@ def placerGobeletIAComplexe(dataPartie):
         
 
 def placerPlusPetitGoblet(dataPartie, vLigne, vColonne):
+    findPlace = False
     for symbole in range(1,4):
 
         if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):

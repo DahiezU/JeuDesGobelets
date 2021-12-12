@@ -3,10 +3,10 @@ def optionsC():
     value = input("\n Selectionnez un numéro : ")
     
     if(int(value)>=1 and int(value)<=4):
-        fichierL = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "r")
+        fichierL = open("config.txt", "r")
         fichierec = list(str(fichierL.read()))
         fichierL.close()
-        fichier = open("C:\\Users\\Ulysse Dahiez\\Documents\\AP3\\Algorithmique\\DM_1\\config.txt", "w")
+        fichier = open("config.txt", "w")
         if(value == "1"):
             fichierec[0] = "1"
             fichier.write("".join(fichierec))
