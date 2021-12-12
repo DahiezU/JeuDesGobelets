@@ -21,7 +21,7 @@ def PartieIA():
     """
 
 def IA(IALevel):
-    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2},"dataGrille":{'22': 'o', '11': 'X', '33': 'o'}}
+    dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2},"dataGrille":{}}
     
     Symbole = ""
     joueur = 1
@@ -188,34 +188,39 @@ def placerGobeletIAComplexe(dataPartie):
     # pour alligner deux pions
     print("fp : ", findPlace)
 
-    if(findPlace == False and ((dataG.get("22") != "o" or dataG.get("22") != "0" or dataG.get("22") != "O") and dataG.get("22") != None)):
+    
+    if(findPlace == False and (dataG.get("22") != "o" or dataG.get("22") != "0" or dataG.get("22") != "O" and( dataG.get("22") == "X" or dataG.get("22") != None))):
         print("ca passe")
         listS = ["o","0","O"]
         for t in range(1,4):
             for u in range(1,4):
-                if(findPlace == False and (i != 2 and j != 2)):
                 
+                thisCurentVal = dataG.get(str(t)+str(u))
+                boolTCV = (thisCurentVal == "o" or  thisCurentVal == "0" or thisCurentVal == "O")
+                if(findPlace == False and boolTCV and ( u != 2 and t != 2)):
+                    
                     for v in range(1,4):
-                        thisVal = dataG.get(str(i+1)+str(j))
-                        if(i+1 < 4 and utilitaire.placeOk(dataPartie, v, i+1, j, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
-                            dataPartie = placerPlusPetitGoblet(dataPartie, i+1, j)[0]
+                        thisVal = dataG.get(str(t+1)+str(u))
+                        
+                        if(u+1 < 4 and utilitaire.placeOk(dataPartie, v, t+1, u, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, t+1, u)[0]
                             findPlace = True
                             break
-                        thisVal = dataG.get(str(i)+str(j+1))
-                        if(j+1 < 4 and utilitaire.placeOk(dataPartie, v, i, j+1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
-                            dataPartie = placerPlusPetitGoblet(dataPartie, i, j+1)[0]
-                            findPlace = True
-                            break
-
-                        thisVal = dataG.get(str(i-1)+str(j))
-                        if(i-1 < 0, utilitaire.placeOk(dataPartie, v, i+1, j, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
-                            dataPartie = placerPlusPetitGoblet(dataPartie, i-1, j)[0]
+                        thisVal = dataG.get(str(t)+str(u+1))
+                        if(t+1 < 4 and utilitaire.placeOk(dataPartie, v, t, u+1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, t, u+1)[0]
                             findPlace = True
                             break
 
-                        thisVal = dataG.get(str(i)+str(j-1))
-                        if(j-1 < 0, utilitaire.placeOk(dataPartie, v, i, j+1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
-                            dataPartie = placerPlusPetitGoblet(dataPartie, i, j-1)[0]
+                        thisVal = dataG.get(str(t-1)+str(u))
+                        if(u-1 < 0, utilitaire.placeOk(dataPartie, v, t-1, u, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, t-1, u)[0]
+                            findPlace = True
+                            break
+
+                        thisVal = dataG.get(str(t)+str(u-1))
+                        if(t-1 < 0, utilitaire.placeOk(dataPartie, v, t, u-1, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
+                            dataPartie = placerPlusPetitGoblet(dataPartie, t, u-1)[0]
                             findPlace = True
                             break
                        
