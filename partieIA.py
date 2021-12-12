@@ -48,7 +48,7 @@ def IA(IALevel):
             dataPartie = utilitaire.placerGoblet(dataPartie, 1)[0]
             joueur = 1
         
-        print(dataPartie)
+        
         
     return
 
