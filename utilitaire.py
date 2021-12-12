@@ -1,5 +1,20 @@
 from re import match
-import bonus
+
+"""
+
+Dans ce fichier nous trouvons toutes les fonctions qui servent à la fois pour 
+la partie deux joueur que pour la partie IA, ces fonctions sont les interactions avec la 
+dataPartie, c'est à dire ce qui va modifier le cours de la partie ( modifier le dictionnaire)
+
+"""
+
+"""
+placeOk sert à verifier si la place avec le symbole rentrée est bien disponnible
+elle renvoie un boolean
+si la place est ok True 
+si elle ne l'est pas False
+
+"""
 
 def placeOk(data, symbole, vLigne, vColonne, player):
     dataPlace = data["dataGrille"].get(str(vLigne)+str(vColonne))
@@ -28,11 +43,22 @@ def placeOk(data, symbole, vLigne, vColonne, player):
             else:
                 return True
     
+"""
+
+win() retourne 0 tant qu'il n'y pas de combinaison gagnante
+sinon elle peut affichier le gangnant 
+l'ia est toujours le joueur deux.
+
+win verifie d'abord les digonal et apres les cases dans le sens des colonnes et dans le sens 
+des lignes en même temps.
+
+win() verifie aussi que les joureurs ne sont pas égalité. (si ils n'ont plus de jetons 
+ou si il n'y a plus de place disponible)
+
+elle vérifie tout ça selon ses coordonées qui sont le nom de l'ellement dans le dictionnaire.
 
 """
-11 22 33 
-31 22 13
-"""
+
 def win(data, player, conditions):
     dataG = data.get("dataGrille")
     dataP1 = data.get("player1")
@@ -53,37 +79,63 @@ def win(data, player, conditions):
                 
                 if(conditions== True):
                     AfficheGrille(data, player)
-                    print("\n   --- Joueur ",player," Gagne ---\n")
+                    print("\n     +------------------------+")
+                    print("     |    Joueur ",player," Gagne    |")
+                    print("     +------------------------+ \n")
                     input("\nPressez entrer pour revenir au menu.\n ")
                                
                 return 4
-                
-            tabVal.append(dataG.get(str(i)+str(j)))
+            if(dataG.get(str(i)+str(j)) != None):
+                tabVal.append(dataG.get(str(i)+str(j)))
         
                 
         valVerifL = ""
         valVerifC = ""
 
+   
+
     if(len(dataG) > 8):
                  
-        RMoy = dataP1.get("2")+dataP2.get("2")
-        if(tabVal.count("X")+tabVal.count("X")>3 and (RMoy==0 or (RMoy==1 and data.get("player"+str(player).get("2"))))):
-            print("Egalité entre les deux joueurs.")
+        GDMoy = dataP1.get("3")+dataP2.get("3")
+        MGMoy = tabVal.count("x")+tabVal.count("0")
+        MDMoy = dataP1.get("2")+dataP2.get("2")
+        MMMoy = tabVal.count(".")+tabVal.count("o")
+
+        
+        if((MGMoy==5 and GDMoy==0) or (MDMoy == 0 and GDMoy == 0) or(MMMoy + MGMoy == 5 and GDMoy == 0 and MDMoy ==0) ):
+            
+
+            AfficheGrille(data, player)
+            print("\n     +--------------------------------+")
+            print("     | Egalité entre les deux joueurs |")
+            print("     +--------------------------------+\n")
+            input("\nPressez entrer pour revenir au menu.\n ")
+            
             return 5
 
-    if(dataP1.get("1")==0 and dataP1.get("2")==0 and dataP1.get("3")==0 and dataP2.get("1")==0 and dataP2.get("2")==0 and dataP2.get("3")==0):
-        print("Egalité entre les deux joueurs.")
+    elif(dataP1.get("1")==0 and dataP1.get("2")==0 and dataP1.get("3")==0 and dataP2.get("1")==0 and dataP2.get("2")==0 and dataP2.get("3")==0):
+        
+        AfficheGrille(data, player)
+        print("\n     +--------------------------------+")
+        print("     | Egalité entre les deux joueurs |")
+        print("     +--------------------------------+\n")
+        input("\nPressez entrer pour revenir au menu.\n ")
         return 3
     
     else:
         return 0
 
+"""
 
+afficherGrille(), affiche la grille avec les nombres de gobelets restant au joueur 
+qui est en train de jouer.
+
+"""
 def AfficheGrille(data, player):
     dataG = data.get("dataGrille")
     dataP1 = data.get("player1")
     dataP2 = data.get("player2")
-    print("\n              1     2     3")
+    print("\n               1     2     3")
     print("            +-----+-----+-----+")
     for i in range (1,4):
         print("        ",str(i)," | ",dataG.get(str(i)+'1', " ")," | ",dataG.get(str(i)+"2", " ")," | ",dataG.get(str(i)+"3", " ")," |")
@@ -98,34 +150,46 @@ def AfficheGrille(data, player):
     print(" +------------+--------------------------+--------------------------+-------------------------+")
 
 
+"""
+placerGobelet() place un gobelet en fonction de ce que rentre le joueur dans le jeu.
 
+elle ne sert que pour les joueurs, les ia placent leurs gobelet dans la partie IA.
+"""
 
 
 def placerGoblet(dataPartie, player):
     errorEnter = False
-    try:
-        symbole = int(input("\nEntrez un numéro de symbole : "))
-        vLigne = int(input("Entrez un numéro de ligne : "))
-        vColonne = int(input("Entrez un numéro de colonne : "))
-        it_is = True
-    except ValueError:
+    it_is = True
+    replay = False
+   
+    symbole = input("\nEntrez un numéro de symbole : ")
+    vLigne = input("Entrez un numéro de ligne : ")
+    vColonne = input("Entrez un numéro de colonne : ")
+    print("viunivjk".isnumeric())
+
+    if(symbole.isnumeric() and vLigne.isnumeric() and vColonne.isnumeric()):
+        if(int(symbole)<4 and int(symbole) > 0 and int(vLigne)<4 and int(vLigne) > 0 and int(vColonne)<4 and int(vColonne) > 0):
+            symbole = int(symbole)
+            vLigne = int(vLigne)
+            vColonne = int(vColonne)
+            print(vColonne+vLigne+symbole)
+            it_is = True
+        else:
+            it_is = False
+    else:
         it_is = False
-
-    if(placeOk(dataPartie, symbole, vLigne, vColonne, player)):
-
-        if(it_is):
+    if(it_is == True):
+        if(placeOk(dataPartie, symbole, vLigne, vColonne, player)):
             EntrerDicoV =  EntrerDico(dataPartie, symbole, vLigne, vColonne, player)
             dataPartie = EntrerDicoV[0]
             errorEnter = EntrerDicoV[1]
             return dataPartie, errorEnter
-        else:
-            AfficheGrille(dataPartie, player)
-            print("\n     +-------------------------+")
-            print("     | Combinaison impossible. |")
-            print("     +-------------------------+\n")
-            dataPartie = placerGoblet(dataPartie, player)[0]
-            return dataPartie, errorEnter
-    else:   
+            
+        else:   
+            replay = True
+    else:
+        replay = True
+    if(replay == True):
         AfficheGrille(dataPartie, player)
         print("\n     +-------------------------+")
         print("     | Combinaison impossible. |")
@@ -133,7 +197,14 @@ def placerGoblet(dataPartie, player):
         dataPartie = placerGoblet(dataPartie, player)[0]
         return dataPartie, errorEnter
 
+"""
+EntrerDico() rentre dans le dico ce que nous lui donnont.
 
+elle rentre simplement la valeur. si la place n'est pas disponible elle retourne un False.
+
+le nom du simbole dans le dico sont ses coordonnés.
+
+"""
 
 def EntrerDico(dataPartie, symbole, vLigne, vColonne, player):
     errorEnter = False

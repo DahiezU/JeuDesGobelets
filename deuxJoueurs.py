@@ -1,5 +1,12 @@
 import utilitaire as util
 
+"""
+Partie2Players() deux joueurs fait jouer les deux joueurs à tour de rôle, tant que 
+personne n'a gagné(ou les joueurs sont exaqueo), la partie ne s'arrete pas
+si un joueur fait une mauvaise entrée, il doit refaire sont entrée.
+
+( on a tous droit à l'erreur :) )
+"""
 
 def Partie2Players():
     dataPartie = {"player1":{"1":2,"2":3,"3":2}, "player2":{"1":2,"2":3,"3":2}, "dataGrille":{}}

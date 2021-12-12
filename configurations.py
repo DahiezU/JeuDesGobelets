@@ -1,3 +1,17 @@
+
+"""
+Ce fichier ne comporte qu'une seule fonction
+elle est lancé depuis le fichier menu 
+
+elle fonctionne de base comme la fonction menu, sauf que la configuration du mode de jeu est 
+enregistré dans un fichier .txt se trouvant dans le même fichier que tout le jeu 
+
+la fonction ouvre le fichier en mode lecture et en mode ecriture, écrit si une configartion
+ est changé au momment des entrées et sauvegarde les modifications dans le fichier.
+
+
+"""
+
 def optionsC():
     print("\n - Nombre de joueurs :\n\n    - [1] Un joueur \n    - [2] Deux joueurs \n\n - Niveau de l'IA :\n\n    - [3] Simple \n    - [4] Avancée \n\n - [5] Retour ")
     value = input("\n Selectionnez un numéro : ")
