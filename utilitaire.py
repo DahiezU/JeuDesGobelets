@@ -165,14 +165,14 @@ def placerGoblet(dataPartie, player):
     symbole = input("\nEntrez un numéro de symbole : ")
     vLigne = input("Entrez un numéro de ligne : ")
     vColonne = input("Entrez un numéro de colonne : ")
-    print("viunivjk".isnumeric())
+    
 
     if(symbole.isnumeric() and vLigne.isnumeric() and vColonne.isnumeric()):
         if(int(symbole)<4 and int(symbole) > 0 and int(vLigne)<4 and int(vLigne) > 0 and int(vColonne)<4 and int(vColonne) > 0):
             symbole = int(symbole)
             vLigne = int(vLigne)
             vColonne = int(vColonne)
-            print(vColonne+vLigne+symbole)
+            
             it_is = True
         else:
             it_is = False
