@@ -1,6 +1,7 @@
 import deuxJoueurs
 import configurations
 import partieIA
+from sys import version
 """
 
 La fonction menu sert à lancer le jeu
@@ -27,7 +28,7 @@ def menu():
         configurations.optionsC()
         menu()
     elif(value == "3"):
-        print("\n\n Dévelopeur : Ulysse Dahiez \n python version : 3.9.5 \n\n liste des librairies utilisé : \n\n - re du module match (Pour les Regex). \n - randRange du module random.\n\n")
+        print("\n\n Développeur : Ulysse Dahiez \n python version : ",version," \n\n liste des librairies utilisé : \n\n - re du module match (Pour les Regex). \n - randRange du module random.\n - version du module sys. \n\n")
         input("Pressez entrer pour revenir au menu.\n ")
         menu()
     elif(value == "4"):
@@ -35,7 +36,7 @@ def menu():
         print("\nJe reste là pour une nouvelle partie ;) \n")
         exit()
     else:
-        print("\n Mauvaise touche, essayez une touche entre 1 et 4 \n\n")
+        print("\nMauvaise touche, essayez une touche entre 1 et 4 \n\n")
         menu()
     
 """
