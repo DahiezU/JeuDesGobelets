@@ -17,13 +17,13 @@ def optionsC():
     value = input("\n Selectionnez un numéro : ")
     
     if(int(value)>=1 and int(value)<=4):
-        fichierL = open("config.txt", "r")
-        fichierec = list(str(fichierL.read()))
+        fichierL = open("config.txt", "r")#ouverture du fichier en mode lecture
+        fichierec = list(str(fichierL.read())) #tableau de string
         fichierL.close()
-        fichier = open("config.txt", "w")
+        fichier = open("config.txt", "w") # mode ecriture
         if(value == "1"):
             fichierec[0] = "1"
-            fichier.write("".join(fichierec))
+            fichier.write("".join(fichierec)) # on ecrit dedans
         elif(value == "2"):
             fichierec[0] = "2"
             fichier.write("".join(fichierec))
@@ -34,7 +34,7 @@ def optionsC():
             fichierec[1] = "4"
             fichier.write("".join(fichierec))
         fichierec.clear()
-        fichier.close()
+        fichier.close() #on le ferme
         optionsC()
     elif(value == "5"):
         return

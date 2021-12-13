@@ -30,9 +30,9 @@ def IA(IALevel):
     Symbole = ""
     joueur = 1
     playerAv = True
-    while utilitaire.win(dataPartie, joueur, True) == 0 or playerAv == True:
+    while utilitaire.win(dataPartie, joueur, True) == 0 or playerAv == True: # tant que personne ne gagne
        
-        if(joueur == 1):
+        if(joueur == 1):# l'IA joue
             if(IALevel == 3):
                 
                 dataPartie = placerGobeletIASimple(dataPartie)
@@ -42,7 +42,7 @@ def IA(IALevel):
                 dataPartie = placerGobeletIAComplexe(dataPartie)
             joueur = 2
             playerAv = False
-        else:
+        else: #le joueur joue
 
             utilitaire.AfficheGrille(dataPartie, 1)
             dataPartie = utilitaire.placerGoblet(dataPartie, 1)[0]
@@ -53,14 +53,14 @@ def IA(IALevel):
     return
 
 """
-placerGobeletIASimple() place des goblets de manière alléatoire dans le jeu.
-mais elle ne peut jouer au dessus de d'un gobelet dont elle n'a pas le pouvoir.
+placerGobeletIASimple() place un goblet de manière alléatoire dans le jeu.
+mais elle ne peut jouer au dessus d'un gobelet dont elle n'a pas le pouvoir.
 """
 
 def placerGobeletIASimple(dataPartie):
     findPlace = False
     dataBase = dataPartie
-    while findPlace == False:
+    while findPlace == False: # 
         vLigne = randrange(1, 4)
         vColonne = randrange(1, 4)
         resPPPG = placerPlusPetitGoblet(dataPartie, vLigne, vColonne)
@@ -155,7 +155,7 @@ def placerGobeletIAComplexe(dataPartie):
            
             for n in range(1,4):
                 if(findPlace == False):
-                    for o in range(1,4):
+                    for o in range(1,4): # on est obligé de bouclé sur les tailles de gobelets pour voir une taille est ok, sinon non
                         
                         if(findPlace == False, utilitaire.placeOk(dataPartie, o, n, valVerifD2.find("e")+1 , 2)):
                             
@@ -219,7 +219,7 @@ def placerGobeletIAComplexe(dataPartie):
                 thisCurentVal = str(dataG.get(str(t)+str(u)))
                 
                 boolTCV = ((thisCurentVal == "o") or  (thisCurentVal == "0") or (thisCurentVal == "O"))
-
+                # pour bien se placer à coter
                 nimp = ( u == 2 and t == 2) == True
                 if(findPlace == False and boolTCV and nimp == False): # l'ia regarde si la boucle ne la met pas au centre, et si elle est bien positionné sur une case qu'elle possède
                     # dans la suite on regarde tout autour d'elle si une case est disponible
@@ -241,7 +241,7 @@ def placerGobeletIAComplexe(dataPartie):
                             break
 
                         thisVal = dataG.get(str(t-1)+str(u))
-                        #au dessus
+                        # au dessus
                         if(t-1 > 0 and utilitaire.placeOk(dataPartie, v, t-1, u, 2) and thisVal != "o" and thisVal != "0" and thisVal != "O" and findPlace == False):  
                             
                             dataPartie = placerPlusPetitGoblet(dataPartie, t-1, u)[0]
@@ -294,9 +294,9 @@ alors elle renvoie un false en seconde position.
 
 def placerPlusPetitGoblet(dataPartie, vLigne, vColonne):
     findPlace = False
-    for symbole in range(1,4):
+    for symbole in range(1,4): # de un à trois
 
-        if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):
+        if(utilitaire.placeOk(dataPartie, symbole, vLigne, vColonne, 2)):# le plus petit passe en premier
             
             EntrerDicoV =  utilitaire.EntrerDico(dataPartie, symbole, vLigne, vColonne, 2)
             dataPartie = EntrerDicoV[0]
